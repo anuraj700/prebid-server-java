@@ -2,9 +2,10 @@ package org.prebid.server.functional.testcontainers.scaffolding
 
 import com.github.tomakehurst.wiremock.matching.RequestPattern
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
-import org.prebid.server.functional.model.bidderspecific.BidderRequest
 import org.prebid.server.functional.testcontainers.container.NetworkServiceContainer
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS
+import static java.util.concurrent.TimeUnit.SECONDS
 import static com.github.tomakehurst.wiremock.client.WireMock.post
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching
@@ -74,11 +75,11 @@ class Bidder extends NetworkScaffolding {
                         .withBody(DEFAULT_BODY_RESPONSE)))
     }
 
-    List<BidderRequest> getBidderRequests(String bidRequestId) {
-        getRecordedRequestsBody(bidRequestId).collect { decode(it, BidderRequest) }
+    List<BidRequest> getBidderRequests(String bidRequestId) {
+        getRecordedRequestsBody(bidRequestId).collect { decode(it, BidRequest) }
     }
 
-    BidderRequest getBidderRequest(String bidRequestId) {
+    BidRequest getBidderRequest(String bidRequestId) {
         def bidderRequests = getBidderRequests(bidRequestId)
         def bidderCallCount = bidderRequests.size()
 
